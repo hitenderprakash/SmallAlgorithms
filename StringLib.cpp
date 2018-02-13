@@ -87,17 +87,13 @@ string ReplaceAll(string input, string toBeReplaced, string Replacement){
     }
     return input;
 }
-vector<string> split(string input, string delimit){
-    vector<string> splited;
+vector<std::string> split(std::string input, std::string delimit){
+    vector<std::string> splited;
     if (input.size()==0||delimit==""){
         splited.push_back(input);
         return splited;
     }
-    string cur="";
-    while (true){
-        if(input.size()==0){
-            break;
-        }
+    while (input.size()>0){
         int found=input.find(delimit);
         if(found==std::string::npos){
             splited.push_back(input);
