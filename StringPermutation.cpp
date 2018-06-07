@@ -1,31 +1,47 @@
 #include <iostream>
 #include <string>
+#include <set>
+#include <algorithm>
 using namespace std;
 
-
-void perm(string toperm, string appendTo){
-    if(toperm.length()==0){
-        cout<<"";
+set<string> permute(string inputString){
+    int inputStringSize = inputString.size();
+    //use set to avoid duplicates
+    set<string> permutations;
+    if(inputStringSize==0){
+        return permutations;
     }
-    else if (toperm.length()==1){
-        cout<<"\n"<<appendTo+toperm;
+    else if (inputStringSize==1){
+        permutations.insert(inputString);
+        return permutations;
     }
-    else if (toperm.length()>1){
-        for (int i=0;i<toperm.length();i++){
-            string temp=toperm;
-            char ith=toperm[i];
-            temp[i]=temp[0];
-            perm(temp.erase(0,1),appendTo+ith);
+    else{
+        for(int i=0;i<inputStringSize;i++){
+            string inputStringCopy=inputString;
+            swap(inputStringCopy[0],inputStringCopy[i]);
+            set<string> resultSetFromSubString = permute(inputStringCopy.substr(1));
+            for(auto itr=resultSetFromSubString.begin();itr!=resultSetFromSubString.end();itr++){
+                permutations.insert(inputStringCopy[0]+ *itr);
+            }
         }
+        return permutations;
     }
 }
 
 //test code
-int main()
+int main(int argc, char *argv[])
 {
-    string a="abcd";
-    cout<<"\nPermutations for string \""<<a <<"\" are: ";
-    perm(a,"");
+    if(argc!=2){
+        cout<<"\nUsage StringPermutations.o \"string to permute\" \n";
+        return 0;
+    }
+    string inputString = argv[1];
+    set<string> permutations = permute(inputString);
+    cout<<"\nPermutations of: "<<inputString;
+    for(auto itr = permutations.begin(); itr!=permutations.end();itr++){
+        cout<<"\n"<<*itr;
+    }
+    cout<<"\n";
     return 0;
 }
 
